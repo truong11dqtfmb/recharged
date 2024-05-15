@@ -1,0 +1,92 @@
+﻿<div class="header_child_service_provider">
+    <div class="container sp_locate">
+        <span>Home > My account > Profile</span>
+    </div>
+</div>
+<div class="container body">
+    <div class="u_container">
+        <div class="u_navbar">
+            <div class="u_navbar_header">
+                My Account
+            </div>
+            <div class="u_navbar_body">
+                <div class="u_navbar_body_item u_navbar_body_item_selected">
+                    Profile
+                </div>
+                <div class="u_navbar_body_item" ng-click="yourOrders()">
+                    Your Orders
+                </div>
+            </div>
+        </div>
+        <div class="u_content">
+            <div class="u_content_title">
+                Profile
+                <button class="btn btn-success" ng-click="modelSetup.formChangePass = !modelSetup.formChangePass" type="button">Change Password</button>
+            </div>
+            <div class="u_content_body">
+                <div class="u_content_group">
+                    <div class="u_group_title">
+                        Personal details
+                    </div>
+                    <div class="u_group_content">
+                        <div>
+                            <div>Name</div>
+                            <div ng-show="!modelSetup.editPersonal">{{model.fullname}}</div>
+                            <div ng-show="modelSetup.editPersonal" class="input-group flex-nowrap">
+                                <input ng-show="modelSetup.editPersonal" ng-model="model.fullname" type="text" class="form-control" placeholder="Full Name" aria-describedby="addon-wrapping">
+                            </div>
+                        </div>
+                        <div>
+                            <div>Address</div>
+                            <div ng-show="!modelSetup.editPersonal">{{model.address}}</div>
+                            <div ng-show="modelSetup.editPersonal" class="input-group flex-nowrap">
+                                <input type="text" class="form-control" ng-model="model.address" placeholder="Address" aria-describedby="addon-wrapping">
+                            </div>
+                        </div>
+                        <div class="u_group_icon_edit">
+                            <i class="fas fa-pen" ng-click="modelSetup.editPersonal = !modelSetup.editPersonal"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="u_content_group">
+                    <div class="u_group_title">
+                        Email address
+                    </div>
+                    <div class="u_group_content">
+                        <div ng-show="!modelSetup.editEmail">{{model.email}}</div>
+                        <div ng-show="modelSetup.editEmail" class="input-group flex-nowrap">
+                            <input type="text" class="form-control" ng-model="model.email" placeholder="Email" aria-describedby="addon-wrapping">
+                        </div>
+                        <div class="u_group_icon_edit">
+                            <i class="fas fa-pen" ng-click="modelSetup.editEmail = !modelSetup.editEmail"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="u_content_group" ng-show="modelSetup.formChangePass">
+                    <div class="u_group_title">
+                        Change Password
+                    </div>
+                    <div class="u_group_content">
+                        <div class="input-group flex-nowrap" style="margin-bottom:15px;">
+                            <input type="password" class="form-control" ng-class="{'error': Error.oldpass}" ng-model="modelChangePass.oldpass" ng-change="changeModel('oldpass')" placeholder="Old Password" aria-describedby="addon-wrapping">
+                        </div>
+                        <div class="input-group flex-nowrap" style="margin-bottom:15px;">
+                            <input type="password" class="form-control" ng-class="{'error': Error.newpass}" ng-model="modelChangePass.newpass" ng-change="changeModel('newpass')" placeholder="Password" aria-describedby="addon-wrapping">
+                        </div>
+                        <div class="input-group flex-nowrap" style="margin-bottom:15px;">
+                            <input type="password" class="form-control" ng-class="{'error': Error.againpass}" ng-model="modelChangePass.againpass" ng-change="changeModel('againpass')" placeholder="Again Password" aria-describedby="addon-wrapping">
+                        </div>
+                    </div>
+                    <div style="color:red;height:30px">{{message}}</div>
+                    <div style="margin-bottom:15px;text-align:right">
+                        <button class="btn btn-success" ng-click="changePass()" type="button">Submit</button>
+                    </div>
+                </div>
+                <div class="u_content_body_submit">
+                    <button class="btn btn-success" ng-show="modelSetup.editPersonal || modelSetup.editEmail" ng-click="submit()" type="button">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-show="isLoading" class="loading">Loading&#8230;</div>

@@ -1,0 +1,117 @@
+﻿<div class="header_child_service_provider">
+    <div class="container sp_locate">
+        <span>Home > Mobile top-up</span>
+    </div>
+    <div class="container sp_header_title">
+        <span>Mobile top-up</span>
+    </div>
+    <div class="container sp_header_content">
+        <div class="sp_header_item">
+            <i class="fas fa-check"></i>
+            <span style="font-weight:700">Instant</span>
+            <span>digital delivery</span>
+        </div>
+        <div class="sp_header_item">
+            <i class="fas fa-check"></i>
+            <span style="font-weight:700">Certified</span>
+            <span>reseller</span>
+        </div>
+        <div class="sp_header_item">
+            <i class="fas fa-check"></i>
+            <span style="font-weight:700">Safe & secure</span>
+            <span>payment</span>
+        </div>
+    </div>
+</div>
+<div class="container body">
+    <div class="sp_body_header">
+        <div>
+            <span class="sp_body_header_title">Step 1: Select which country this product will be used</span>
+        </div>
+        <div>
+            <div class="custom-dropdown">
+                <div class="selected-option">
+                    <div>
+                        <img style=" width: 40px; border-radius: 4px; margin-right: 5px;" src="/img/{{model.country.img}}" />
+                        {{model.country.title}}
+                    </div>
+                    <i class="fas fa-caret-down"></i>
+                </div>
+                <div class="dropdown-list">
+                    <div ng-repeat="item in list" class="option">
+                        <img src="/img/{{item.img}}" />
+                        {{item.title}}
+                    </div>
+                </div>
+            </div>
+            <div class="sp_enter_phone">
+                <div class="sp_enter_phone_title">+84</div>
+                <input type="number" ng-class="{'error': errorPhone}" placeholder="Phone number" ng-model="checkPhone" />
+                <div ng-show="errorPhone" class="text_error">Malformed <span class="text_notification">For examp: 123456789</span></div>
+            </div>
+            <div class="sp_enter_submit">
+                <button class="btn btn-success" ng-click="submit()" type="button" ng-disabled="!model.statusData">Search Provider</button>
+            </div>
+        </div>
+    </div>
+    <div class="group_column">
+        <div class="group_mobile">
+            <div class="group_mobile_item" ng-repeat="item in listService" ng-click="chooseService(item.id, $index, item.picture, item.name)" ng-class="{'btn_selected': $index == model.selectedService}">
+                <img src="/img/{{item.picture}}" alt="{{item.name}}" />
+                <span>{{item.name}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="sp_body_content_more">
+        <div class="sp_body_content_more_item">
+            <div class="sp_body_content_point"></div>
+            <div class="sp_body_content_title">
+                How do I top up online?
+            </div>
+            <div class="sp_body_content_description">
+                It's easy to top up online on Recharge.com. All you need is your email address or phone number. We offer call credit for all the biggest providers. So look for you provider on our call credit page. Select how much call credit you need and pay with your prefered payment method. Your call credit will be send to your phone in seconds. Ready for you to call your friends and family.
+            </div>
+        </div>
+        <div class="sp_body_content_more_item">
+            <div class="sp_body_content_point"></div>
+            <div class="sp_body_content_title">
+                How do I top up someone else's phone?
+            </div>
+            <div class="sp_body_content_description">
+                Want to send call credit and data to someone else? That's just as easy as topping up your own phone on Recharge.com. All you need is their phone number or email address.
+            </div>
+        </div>
+        <div class="sp_body_content_more_item">
+            <div class="sp_body_content_point"></div>
+            <div class="sp_body_content_title">
+                How do I top up internationally?
+            </div>
+            <div class="sp_body_content_description">
+                It's easy to top up internationally. Whether you are abroad or you want to send call credit and data abroad. No matter where you are, you can top up your prepaid plan just like your used to. Useful when you run out of credit on holiday. We offer many call credit and data top ups from across the world. Simply select the country you want to send call credit and data to on the top right of this page. You'll see the products we have on offer for that country. Select the right provider. The rest of the process works just as fast and easy as you're used to from us.
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer_child_home">
+    <div class="container footer_child_home_label">
+        <span>Recharge fast, safe & simple</span>
+    </div>
+    <div class="container group_footer_child">
+        <div class="item_group_footer">
+            <img src="/img/test.svg" alt="G-mobile" />
+            <span class="title">Instant digital delivery</span>
+            <span class="description">You'll be able to use your digital credit within seconds.</span>
+        </div>
+        <div class="item_group_footer">
+            <img src="/img/tes1.svg" alt="G-mobile" />
+            <span class="title">Trusted by milions</span>
+            <span class="description">We're proud to have over 5 milion customers worldwide and consident Excellent ratings on TrusPilot.</span>
+        </div>
+        <div class="item_group_footer">
+            <img src="/img/test2.svg" alt="G-mobile" />
+            <span class="title">Pay safely & securely</span>
+            <span class="description">Order in seconds using your favaurite payment method.</span>
+        </div>
+    </div>
+</div>
+<div ng-show="isLoading" class="loading">Loading&#8230;</div>

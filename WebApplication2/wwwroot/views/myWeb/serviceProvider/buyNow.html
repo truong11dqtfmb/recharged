@@ -1,0 +1,49 @@
+﻿<style>
+    .header_nav {
+        display: none;
+    }
+</style>
+<div class="container header_child_check_out">
+    Check Out
+</div>
+<div class="container body">
+    <div class="bn_address">
+        <div>
+            <div>
+                <i class="fas fa-check-circle"></i>
+                <span>
+                    1. Email Address
+                </span>
+            </div>
+        </div>
+        <div class="bn_address_mail">
+            {{gmail}}
+        </div>
+    </div>
+    <div class="bn_payment">
+        <div class="bn_payment_header">
+            <div class="bn_payment_info">
+                <img width="100" src="/img/{{img}}" />
+                <span>{{title}} {{value}}.000 VND</span>
+            </div>
+            <div class="bn_payment_title">
+                <div>Telephone number:</div>
+                <div>+84 {{phonenumber}}</div>
+            </div>
+        </div>
+        <div class="bn_payment_body">
+            <div>
+                <div>{{title}} {{value}}.000 VND x1</div>
+                <div>{{value}},000 VND</div>
+            </div>
+            <div>
+                <div style="font-weight:700">Total</div>
+                <div style="font-weight:700">{{value}},000 VND</div>
+            </div>
+        </div>
+        <div class="bn_payment_footer">
+            <button class="btn btn-success" ng-click="access()" type="button">Access</button>
+        </div>
+    </div>
+</div>
+<div ng-show="isLoading" class="loading">Loading&#8230;</div>

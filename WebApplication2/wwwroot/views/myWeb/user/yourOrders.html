@@ -1,0 +1,55 @@
+﻿<div class="header_child_service_provider">
+    <div class="container sp_locate">
+        <span>Home > My account > Your Orders</span>
+    </div>
+</div>
+<div class="container body">
+    <div class="u_container">
+        <div class="u_navbar">
+            <div class="u_navbar_header">
+                My Account
+            </div>
+            <div class="u_navbar_body">
+                <div class="u_navbar_body_item" ng-click="profile()">
+                    Profile
+                </div>
+                <div class="u_navbar_body_item u_navbar_body_item_selected">
+                    Your Orders
+                </div>
+            </div>
+        </div>
+        <div class="u_content">
+            <div class="u_content_title">
+                Your Orders
+            </div>
+            <div class="u_content_search has_phone">
+                <div>Search</div>
+                <div class="header_phone">+84 </div>
+                <div class="input-group flex-nowrap">
+                    <input type="text" class="form-control" ng-model="model.Phone" ng-change="modelIsPhone()" placeholder="Phone Number" aria-describedby="addon-wrapping">
+                </div>
+                <i ng-click="init()" class="fas fa-search"></i>
+            </div>
+            <div class="u_content_body">
+                <div class="u_content_group" ng-repeat="item in listTransaction">
+                    <div class="u_yo_group_title">
+                        {{item.titleService}}
+                    </div>
+                    <div class="u_yo_group_content" ng-repeat="itemDetail in item.detail">
+                        <div>
+                            <img style="width:80px" src="/img/{{itemDetail.picture}}" />
+                            {{item.titleService}} - {{itemDetail.value}}.000 VND
+                        </div>
+                        <div>
+                            +84 {{itemDetail.phone}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="u_content_no_data" ng-show="listTransaction.length < 1">
+                No Data
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-show="isLoading" class="loading">Loading&#8230;</div>

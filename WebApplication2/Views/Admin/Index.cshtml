@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Admin Recharge";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section plugin_style {
+    <link href="~/css/myWeb/login.css" rel="stylesheet" />
+}
+<style>
+     html {
+         height: 100%;
+     }
+
+     body {
+         margin: 0;
+         padding: 0;
+         font-family: sans-serif;
+         background: unset;
+     }
+</style>
+<div ng-view style="flex:1">
+
+</div>
+<script src="~/views/admin/controller.js"></script>

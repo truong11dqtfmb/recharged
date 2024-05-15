@@ -1,0 +1,112 @@
+﻿<div class="header_child_service_provider">
+    <div class="container sp_locate">
+        <span>Home > Mobile top-up > {{title}}</span>
+    </div>
+    <div class="container sb_header_title">
+        <img src="/img/{{img}}" />
+        <span>{{title}}</span>
+    </div>
+    <div class="container sp_header_content">
+        <div class="sp_header_item">
+            <i class="fas fa-check"></i>
+            <span style="font-weight:700">Instant</span>
+            <span>digital delivery</span>
+        </div>
+        <div class="sp_header_item">
+            <i class="fas fa-check"></i>
+            <span style="font-weight:700">Certified</span>
+            <span>reseller</span>
+        </div>
+        <div class="sp_header_item">
+            <i class="fas fa-check"></i>
+            <span style="font-weight:700">Safe & secure</span>
+            <span>payment</span>
+        </div>
+    </div>
+</div>
+<div class="container body">
+    <div class="sb_body_header">
+        <div>
+            <span class="sb_body_header_title">Select a value</span>
+        </div>
+        <div>
+            <div class="sb_enter_phone">
+                <span>Telephone number</span>
+                <div>
+                    <img src="/img/vietnam.jpg" />
+                    <span>+84 </span>
+                    <span>{{phonenumber}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="group_row">
+        <div class="group_mobile">
+            <div class="group_mobile_item" ng-repeat="item in listSubscription" ng-click="chooseSubscription($index)" ng-class="{'btn_selected': $index == model.selectedService}">
+                <div class="sb_item_group_header">
+                    <img src="/img/{{img}}" />
+                    <div>{{title}} {{item.value}}.000 VND</div>
+                </div>
+                <div class="sb_item_group_header_description">
+                    <span>Instant</span>
+                    <span>delivery to phone</span>
+                </div>
+                <div class="sb_buy">
+                    <button class="btn btn-success" type="button" ng-click="buyNow(item.value)">Buy now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sp_body_content_more">
+        <div class="sp_body_content_more_item">
+            <div class="sp_body_content_point"></div>
+            <div class="sp_body_content_title">
+                How do I top up online?
+            </div>
+            <div class="sp_body_content_description">
+                It's easy to top up online on Recharge.com. All you need is your email address or phone number. We offer call credit for all the biggest providers. So look for you provider on our call credit page. Select how much call credit you need and pay with your prefered payment method. Your call credit will be send to your phone in seconds. Ready for you to call your friends and family.
+            </div>
+        </div>
+        <div class="sp_body_content_more_item">
+            <div class="sp_body_content_point"></div>
+            <div class="sp_body_content_title">
+                How do I top up someone else's phone?
+            </div>
+            <div class="sp_body_content_description">
+                Want to send call credit and data to someone else? That's just as easy as topping up your own phone on Recharge.com. All you need is their phone number or email address.
+            </div>
+        </div>
+        <div class="sp_body_content_more_item">
+            <div class="sp_body_content_point"></div>
+            <div class="sp_body_content_title">
+                How do I top up internationally?
+            </div>
+            <div class="sp_body_content_description">
+                It's easy to top up internationally. Whether you are abroad or you want to send call credit and data abroad. No matter where you are, you can top up your prepaid plan just like your used to. Useful when you run out of credit on holiday. We offer many call credit and data top ups from across the world. Simply select the country you want to send call credit and data to on the top right of this page. You'll see the products we have on offer for that country. Select the right provider. The rest of the process works just as fast and easy as you're used to from us.
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer_child_home">
+    <div class="container footer_child_home_label">
+        <span>Recharge fast, safe & simple</span>
+    </div>
+    <div class="container group_footer_child">
+        <div class="item_group_footer">
+            <img src="/img/test.svg" alt="G-mobile" />
+            <span class="title">Instant digital delivery</span>
+            <span class="description">You'll be able to use your digital credit within seconds.</span>
+        </div>
+        <div class="item_group_footer">
+            <img src="/img/tes1.svg" alt="G-mobile" />
+            <span class="title">Trusted by milions</span>
+            <span class="description">We're proud to have over 5 milion customers worldwide and consident Excellent ratings on TrusPilot.</span>
+        </div>
+        <div class="item_group_footer">
+            <img src="/img/test2.svg" alt="G-mobile" />
+            <span class="title">Pay safely & securely</span>
+            <span class="description">Order in seconds using your favaurite payment method.</span>
+        </div>
+    </div>
+</div>
+<div ng-show="isLoading" class="loading">Loading&#8230;</div>

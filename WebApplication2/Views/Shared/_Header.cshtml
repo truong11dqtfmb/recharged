@@ -1,0 +1,55 @@
+﻿@{
+    var UserName = ViewData["UserName"] as string;
+    var FullName = ViewData["FullName"] as string;
+}
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <div class="container-fluid">
+        <div class="logo">
+            <a href="/">
+                <img style="width:250px" src="~/img/logo.png" />
+            </a>
+        </div>
+        <div class="header_action">
+            <div class="logo">
+                <img style="width:50px; border-radius:5px" src="~/img/vietnam.jpg" />
+                <span>VN | VND</span>
+            </div>
+            @if (UserName == "")
+            {
+                <div id="group_button_login">
+                    <a href="/Login/Index">Sign in</a>
+                    <a href="/Register">Sign up</a>
+                </div>
+            }
+            else
+            {
+                <div style="display:flex;align-items:center">
+                    <a href="/User">
+                        <span class="user_name">
+                            @FullName
+                        </span>
+                    </a>
+                    <input type="text" id="userName" value="@UserName" style="display:none;"/>
+                    <div id="group_button_login">
+                        <a href="/Login/Logout">Log out</a>
+                        <a href="/Register" style="display:none">Sign up</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</nav>
+<ul class="nav header_nav">
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="/">HOME</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">CATEGORY</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+    </li>
+</ul>

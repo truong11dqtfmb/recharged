@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Login Page";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+@section plugin_style {
+    <link href="~/css/myWeb/login.css" rel="stylesheet" />
+}
+<div ng-app="App_ESEIM" ng-controller="Ctrl_ESEIM">
+    <div ng-view></div>
+</div>
+<script src="~/views/myWeb/login/controller.js"></script>
