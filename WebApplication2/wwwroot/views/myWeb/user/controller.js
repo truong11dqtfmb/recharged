@@ -55,9 +55,7 @@ app.controller("profile", function ($scope, $rootScope, dataservice, $http, $loc
         formChangePass: false,
     };
     $scope.modelChangePass = {
-        editPersonal: false,
-        editEmail: false,
-        formChangePass: false,
+
     };
     $scope.init = function () {
         var checkLogin = document.getElementById('userName');
@@ -85,16 +83,23 @@ app.controller("profile", function ($scope, $rootScope, dataservice, $http, $loc
         $location.path("/yourOrders");
     };
     $scope.submit = function () {
-        dataservice.editUser($scope.model)
-            .then(function (rs) {
-                if (!rs.data.hasError) {
-                    $scope.init();
-                }
-                alert(rs.data.title);
-            })
-            .catch(function (er) {
-                console.log('Hass error when wubmit to edit user!');
-            });
+        if (!validate()) {
+            $scope.isLoading = true;
+            dataservice.editUser($scope.model)
+                .then(function (rs) {
+                    if (!rs.data.hasError) {
+                        //$scope.init();
+                        $scope.isLoading = false;
+                        $scope.modelSetup.editEmail = false;
+                        $scope.modelSetup.editPersonal = false;
+                        $scope.message = "";
+                    }
+                    alert(rs.data.title);
+                })
+                .catch(function (er) {
+                    console.log('Hass error when wubmit to edit user!');
+                });
+        };
     };
     $scope.changePass = function () {
         if (!validataPass()) {
@@ -137,6 +142,40 @@ app.controller("profile", function ($scope, $rootScope, dataservice, $http, $loc
         oldpass: false,
         newpass: false,
         againpass: false,
+    };
+    function validate() {
+        var hasError = false;
+        if ($scope.modelSetup.editEmail) {
+            // Kiểm tra email
+            if (!$scope.model.email || $scope.model.email == undefined) {
+                hasError = true;
+                $scope.Erroremail = true;
+                $scope.message = "Enter your Email!";
+                return hasError;
+            }
+            // Kiểm tra email
+            if (!$scope.model.email || !/^\S+@\S+\.\S+$/.test($scope.model.email)) {
+                hasError = true;
+                $scope.Erroremail = true;
+                $scope.message = "Email unsuccess!";
+                return hasError;
+            }
+        };
+        if ($scope.modelSetup.editPersonal) {
+            // Kiểm tra email
+            if (!$scope.model.fullname || $scope.model.fullname == undefined) {
+                hasError = true;
+                $scope.Errorfullname = true;
+                $scope.message = "Enter your Infomation!";
+            }
+            // Kiểm tra email
+            if (!$scope.model.address || $scope.model.address == undefined) {
+                hasError = true;
+                $scope.Erroraddress = true;
+                $scope.message = "Enter your Infomation!";
+            }
+            return hasError;
+        }
     };
     function validataPass() {
         var hasError = false;

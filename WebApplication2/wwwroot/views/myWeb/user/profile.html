@@ -32,17 +32,18 @@
                         <div>
                             <div>Name</div>
                             <div ng-show="!modelSetup.editPersonal">{{model.fullname}}</div>
-                            <div ng-show="modelSetup.editPersonal" class="input-group flex-nowrap">
+                            <div ng-show="modelSetup.editPersonal" class="input-group flex-nowrap" ng-class="{'lack_info': Errorfullname}">
                                 <input ng-show="modelSetup.editPersonal" ng-model="model.fullname" type="text" class="form-control" placeholder="Full Name" aria-describedby="addon-wrapping">
                             </div>
                         </div>
                         <div>
                             <div>Address</div>
                             <div ng-show="!modelSetup.editPersonal">{{model.address}}</div>
-                            <div ng-show="modelSetup.editPersonal" class="input-group flex-nowrap">
+                            <div ng-show="modelSetup.editPersonal" class="input-group flex-nowrap" ng-class="{'lack_info': Erroraddress}">
                                 <input type="text" class="form-control" ng-model="model.address" placeholder="Address" aria-describedby="addon-wrapping">
                             </div>
                         </div>
+                        <div style="color:red;height:30px" ng-show="modelSetup.editPersonal">{{message}}</div>
                         <div class="u_group_icon_edit">
                             <i class="fas fa-pen" ng-click="modelSetup.editPersonal = !modelSetup.editPersonal"></i>
                         </div>
@@ -54,9 +55,10 @@
                     </div>
                     <div class="u_group_content">
                         <div ng-show="!modelSetup.editEmail">{{model.email}}</div>
-                        <div ng-show="modelSetup.editEmail" class="input-group flex-nowrap">
+                        <div ng-show="modelSetup.editEmail" class="input-group flex-nowrap" ng-class="{'lack_info': Erroremail}">
                             <input type="text" class="form-control" ng-model="model.email" placeholder="Email" aria-describedby="addon-wrapping">
                         </div>
+                        <div style="color:red;height:30px" ng-show="modelSetup.editEmail">{{message}}</div>
                         <div class="u_group_icon_edit">
                             <i class="fas fa-pen" ng-click="modelSetup.editEmail = !modelSetup.editEmail"></i>
                         </div>
