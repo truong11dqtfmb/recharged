@@ -1,0 +1,34 @@
+﻿<div class="header_child_home" style="height:500px">
+    <div class="container feedback header_child_home_body">
+        Send message to us!
+        <textarea rows="4" ng-model="model.Content"></textarea>
+        <div style="color:red;height:30px">{{message}}</div>
+        <div style="text-align:left">
+            <button class="btn btn-success" ng-click="feedback()" type="button">Send now</button>
+        </div>
+    </div> 
+</div>
+<div class="footer_child_home">
+    <div class="container footer_child_home_label">
+        <span>Recharge fast, safe & simple</span>
+    </div>
+    <div class="container group_footer_child">
+        <div class="item_group_footer">
+            <img src="/img/test.svg" alt="G-mobile" />
+            <span class="title">Instant digital delivery</span>
+            <span class="description">You'll be able to use your digital credit within seconds.</span>
+        </div>
+        <div class="item_group_footer">
+            <img src="/img/tes1.svg" alt="G-mobile" />
+            <span class="title">Trusted by milions</span>
+            <span class="description">We're proud to have over 5 milion customers worldwide and consident Excellent ratings on TrusPilot.</span>
+        </div>
+        <div class="item_group_footer">
+            <img src="/img/test2.svg" alt="G-mobile" />
+            <span class="title">Pay safely & securely</span>
+            <span class="description">Order in seconds using your favaurite payment method.</span>
+        </div>
+    </div>
+</div>
+
+<div ng-show="isLoading" class="loading">Loading&#8230;</div>
