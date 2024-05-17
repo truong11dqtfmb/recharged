@@ -1017,5 +1017,5 @@ app.controller("feedback", function ($scope, $rootScope, dataservice, $location)
             });
     };
 
-    //$scope.init();
+    $scope.init();
 });

@@ -19,6 +19,7 @@ namespace ERP_Project.Middlewares
         {
             "User",
             "Admin",
+            "Feedback",
         };
 
         public LogginLogoutMiddleware(RequestDelegate next)

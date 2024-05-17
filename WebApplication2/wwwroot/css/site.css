@@ -938,3 +938,17 @@ tr > td{
     background: gray;
     color: white;
 }
+.feedback {
+    font-size: 30px;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+.feedback > textarea {
+    margin-top: 20px;
+}
+.feedback > div > button {
+    margin-top: 30px;
+    width:200px;
+}
