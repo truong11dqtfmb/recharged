@@ -922,7 +922,19 @@ tr > td{
 .user_role::placeholder {
     color: transparent;
 }
-
 .user_role:focus::placeholder {
     color: #858585;
+}
+.form_access{
+    color:white;
+    text-align:center;
+}
+.form_access_group_btn{
+    margin-top:20px;
+    display:flex;
+    justify-content:space-around;
+}
+.option_selected {
+    background: gray;
+    color: white;
 }

@@ -10,7 +10,6 @@
             <div class="ad_form_content login-box" ng-show="modelSetup.insert">
                 <h1>{{modelSetup.titleForm}}</h1>
                 <div class="div_cancle" ng-click="cancle()">
-                    <!--<i class="fas fa-times-circle"></i>-->
                     <i class="fas fa-times"></i>
                 </div>
                 <form>
@@ -20,7 +19,7 @@
                     </div>
                     <div class="user-box" ng-class="{'lack_info': ErrorPassWord}">
                         <input type="{{(!model.showPass) ? 'text' : 'password'}}" name="" ng-model="model.PassWord" required="" ng-change="changeModel('password')">
-                        <label>Password</label>
+                        <label>New Password</label>
                         <i class="fas fa-eye" ng-show="model.showPass" ng-click="model.showPass = false"></i>
                         <i class="fas fa-eye-slash" ng-show="!model.showPass" ng-click="model.showPass = true"></i>
                     </div>
@@ -34,7 +33,7 @@
                     </div>
                     <div class="user-box" ng-class="{'lack_info': ErrorFullName}">
                         <input type="text" name="" ng-model="model.FullName" required="" ng-change="changeModel('fullname')" ng-keypress="($event.which === 13) && submit()">
-                        <label>FullName</label>
+                        <label>Full Name</label>
                     </div>
                     <div class="user-box" ng-class="{'lack_info': ErrorRole}">
                         <input type="text" class="user_role" placeholder="(Admin = 0, User = 1)" name="" ng-model="model.Role" required="" ng-change="changeModel('role')" ng-keypress="($event.which === 13) && submit()">
@@ -44,7 +43,7 @@
                         <input type="text" name="" ng-model="model.Address" required="" ng-change="changeModel('address')">
                         <label>Address</label>
                     </div>
-                    <div style="color:red;height:30px">{{message}}</div>
+                    <div style="color:red;height:30px;margin: -10px 0 10px 0">{{message}}</div>
 
                     <button class="btn btn-success" ng-click="submit()" type="button">
                         {{modelSetup.titleButton}}
@@ -53,6 +52,17 @@
             </div>
         </div>
 
+        <div class="ad_ct_body_form" ng-show="modelSetup.delete">
+            <div class="ad_form_content login-box form_access">
+                <div class="form_access_title">
+                    Are you sure you want to delete it?
+                </div>
+                <div class="form_access_group_btn">
+                    <button class="btn btn-success" ng-click="submitDelete()" type="button">Confirm</button>
+                    <button class="btn btn-danger" ng-click="cancle()" type="button">Cancel</button>
+                </div>
+            </div>
+        </div>
         <div class="ad_ct_body_table">
 
             <div class="body_tb_title">
@@ -79,7 +89,7 @@
                             <td>{{item.id}}</td>
                             <td>{{item.username}}</td>
                             <td>{{item.fullname}}</td>
-                            <td>{{item.phone}}</td>
+                            <td>0{{item.phone}}</td>
                             <td>{{item.role}}</td>
                             <td>{{item.amountPayment}}</td>
                             <td>

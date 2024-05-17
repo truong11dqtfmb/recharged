@@ -50,6 +50,7 @@ app.controller("index", function ($scope, dataservice) {
     $scope.submit = function () {
         if (!validate()) {
             $scope.isLoading = true;
+            $scope.model.Phone = $scope.model.Phone.substring(1);
             dataservice.register($scope.model)
                 .then(function (response) {
                     if (!response.data.hasError) {

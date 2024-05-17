@@ -19,7 +19,7 @@ app.factory('dataservice', function ($http) {
             return $http.post('/Admin/EditUser/', data, { headers: headers });
         },
         removeUser: function (id) {
-            return $http.post('/Admin/RemoveUser/' + id, { headers: headers });
+            return $http.get('/Admin/RemoveUser/' + id, { headers: headers });
         },
         detailUser: function (id) {
             return $http.get('/Admin/DetailUser/' + id, { headers: headers });
@@ -35,7 +35,7 @@ app.factory('dataservice', function ($http) {
             return $http.post('/Admin/EditServiceCard/', data, { headers: headers });
         },
         removeServiceCard: function (id) {
-            return $http.post('/Admin/RemoveServiceCard/' + id, { headers: headers });
+            return $http.get('/Admin/RemoveServiceCard/' + id, { headers: headers });
         },
         detailServiceCard: function (id) {
             return $http.get('/Admin/DetailServiceCard/' + id, { headers: headers });
@@ -67,7 +67,7 @@ app.factory('dataservice', function ($http) {
             return $http.post('/Admin/EditTransaction/', data, { headers: headers });
         },
         removeTransaction: function (id) {
-            return $http.post('/Admin/RemoveTransaction/' + id, { headers: headers });
+            return $http.get('/Admin/RemoveTransaction/' + id, { headers: headers });
         },
         detailTransaction: function (id) {
             return $http.get('/Admin/DetailTransaction/' + id, { headers: headers });
@@ -99,6 +99,7 @@ app.controller("Ctrl_ESEIM", function ($scope, $rootScope, $location) {
     $rootScope.locate = "Manage > User";
     $scope.userPage = function () {
         $rootScope.locate = "Manage > User";
+        $scope.active_navbar = 1;
         $location.path("/");
     };
     $scope.transactionPage = function () {
@@ -154,9 +155,10 @@ app.config(function ($routeProvider, $httpProvider, $locationProvider) {
 app.controller("user", function ($scope, $rootScope, dataservice, $location) {
     $scope.modelSetup = {
         titleTable: "User's records",
-        titleButton: "Add",
         titleForm: "User's form",
-        insert: false
+        titleButton: "Add",
+        insert: false,
+        delete: false,
     };
     $scope.model = {
         UserName: "",
@@ -165,7 +167,7 @@ app.controller("user", function ($scope, $rootScope, dataservice, $location) {
         Email: "",
         FullName: "",
         Address: "",
-        Role: 1,
+        Role: "",
         Id: 0,
     };
     $scope.init = function () {
@@ -180,21 +182,22 @@ app.controller("user", function ($scope, $rootScope, dataservice, $location) {
                 }
                 $scope.isLoading = false;
             })
-            .catch(function (er) {
+            .catch(function (rs) {
                 console.log("Has error when getList!")
-                console.log(er);
+                console.log(rs);
             });
     };
 
     $scope.init();
     $scope.submit = function () {
-        $scope.isLoading = true;
         if (!validate()) {
+            $scope.isLoading = true;
             if ($scope.modelSetup.titleButton == "Add") {
+                $scope.model.Phone = $scope.model.Phone.substring(1);
                 dataservice.insertUser($scope.model)
                     .then(function (response) {
                         if (!response.data.hasError) {
-                            alert(response.data.title);
+                            //alert(response.data.title);
                             $scope.reload();
                         } else {
                             alert(response.data.title + "đã tồn  tại!");
@@ -203,13 +206,14 @@ app.controller("user", function ($scope, $rootScope, dataservice, $location) {
                     })
                     .catch(function (rs) {
                         console.log("Has error when insertUser!")
-                        console.log(er);
+                        console.log(rs);
                     });
             } else {
+                $scope.model.Phone = $scope.model.Phone.substring(1);
                 dataservice.editUser($scope.model)
                     .then(function (response) {
                         if (!response.data.hasError) {
-                            alert(response.data.title);
+                            //alert(response.data.title);
                             $scope.reload();
                         } else {
                             alert(response.data.title + "đã tồn  tại!");
@@ -218,7 +222,7 @@ app.controller("user", function ($scope, $rootScope, dataservice, $location) {
                     })
                     .catch(function (rs) {
                         console.log("Has error when insertUser!")
-                        console.log(er);
+                        console.log(rs);
                     });
             };
         }
@@ -230,11 +234,10 @@ app.controller("user", function ($scope, $rootScope, dataservice, $location) {
         dataservice.detailUser(id)
             .then(function (response) {
                 if (!response.data.hasError) {
-
                     $scope.model.Id = response.data.object.id;
                     $scope.model.UserName = response.data.object.userName;
-                    $scope.model.PassWord = response.data.object.passWord;
-                    $scope.model.Phone = response.data.object.phone;
+                    $scope.model.PassWord = "";
+                    $scope.model.Phone = "0" + response.data.object.phone;
                     $scope.model.Email = response.data.object.email;
                     $scope.model.FullName = response.data.object.fullname;
                     $scope.model.Address = response.data.object.address;
@@ -246,22 +249,59 @@ app.controller("user", function ($scope, $rootScope, dataservice, $location) {
             })
             .catch(function (rs) {
                 console.log("Has error when detailUser!")
-                console.log(er);
+                console.log(rs);
             });
     };
-    $scope.delete = function () {
-
+    $scope.delete = function (id) {
+        $scope.modelSetup.delete = true;
+        $scope.layoutPopup = true;
+        $scope.model.Id = id;
+    };
+    $scope.submitDelete = function () {
+        $scope.isLoading = true;
+        dataservice.removeUser($scope.model.Id)
+            .then(function (response) {
+                if (!response.data.hasError) {
+                    $scope.reload();
+                }
+                $scope.isLoading = false;
+            })
+            .catch(function (rs) {
+                console.log("Has error when detailUser!");
+                console.log(rs);
+            });
     };
     $scope.reload = function () {
+        $scope.model = {
+            UserName: "",
+            PassWord: "",
+            Phone: "",
+            Email: "",
+            FullName: "",
+            Address: "",
+            Role: "",
+            Id: 0,
+        };
         $scope.cancle();
         $scope.init();
     };
     $scope.insert = function () {
+        $scope.model = {
+            UserName: "",
+            PassWord: "",
+            Phone: "",
+            Email: "",
+            FullName: "",
+            Address: "",
+            Role: "",
+            Id: 0,
+        };
         $scope.modelSetup.titleButton = "Add";
         $scope.modelSetup.insert = true;
         $scope.layoutPopup = true;
     };
     $scope.cancle = function () {
+        $scope.modelSetup.delete = false;
         $scope.modelSetup.insert = false;
         $scope.layoutPopup = false;
     };
@@ -272,7 +312,7 @@ app.controller("user", function ($scope, $rootScope, dataservice, $location) {
         if (type == "password" && $scope.model.PassWord != "") {
             $scope.ErrorPassWord = false;
         }
-        if (type == "againpassword" && $scope.model.AgainPassWord != "" && $scope.model.AgainPassWord === $scope.model.PassWord) {
+        if (type == "againpassword" && $scope.model.AgainPassWord != "") {
             $scope.ErrorAgainPassWord = false;
         }
         if (type == "phone" && $scope.model.Phone != "") {
@@ -288,6 +328,15 @@ app.controller("user", function ($scope, $rootScope, dataservice, $location) {
         if (type == "fullname" && $scope.model.FullName != "") {
             $scope.ErrorFullName = false;
         }
+        if (type == "role" && $scope.model.Role != "" && $scope.model.Role != undefined) {
+            if ($scope.model.Role.length > 1 || $scope.model.Role > 1) {
+                $scope.model.Role = $scope.model.Role.slice(0, -1);
+            }
+            if (!/^\d+$/.test($scope.model.Role)) {
+                $scope.model.Role = $scope.model.Role.slice(0, -1);
+            }
+            $scope.ErrorRole = false;
+        }
 
         if ($scope.model.UserName != "" && $scope.model.PassWord != "" && $scope.model.AgainPassWord != "" && $scope.model.Phone != "" && $scope.model.Email != "" && $scope.model.FullName != "") {
             $scope.message = "";
@@ -300,18 +349,9 @@ app.controller("user", function ($scope, $rootScope, dataservice, $location) {
             hasError = true;
             $scope.ErrorUserName = true;
         }
-        if ($scope.model.PassWord == "" || $scope.model.PassWord == undefined) {
-            hasError = true;
-            $scope.ErrorPassWord = true;
-        }
         if ($scope.model.FullName == "" || $scope.model.FullName == undefined) {
             hasError = true;
             $scope.ErrorFullName = true;
-        }
-        // Kiểm tra lại mật khẩu
-        if (!$scope.model.AgainPassWord || $scope.model.AgainPassWord == undefined) {
-            hasError = true;
-            $scope.ErrorAgainPassWord = true;
         }
         // Kiểm tra số điện thoại
         if (!$scope.model.Phone || $scope.model.Phone == undefined) {
@@ -323,26 +363,20 @@ app.controller("user", function ($scope, $rootScope, dataservice, $location) {
             hasError = true;
             $scope.ErrorEmail = true;
         }
-        $scope.message = "Nhập đầy đủ thông tin để đăng nhập!";
+        $scope.message = "Please enter complete information!";
         if (hasError) {
             return hasError;
         } else {
             $scope.message = "";
         }
         // Kiểm tra lại mật khẩu
-        if ($scope.model.PassWord.length < 6) {
+        if ($scope.model.PassWord != "" && $scope.model.PassWord.length < 6) {
             hasError = true;
             $scope.ErrorPassWord = true;
             $scope.message = "Mật khẩu không được ít hơn 6 ký tự!";
             return hasError;
         }
-        if (!$scope.model.AgainPassWord || $scope.model.AgainPassWord !== $scope.model.PassWord) {
-            hasError = true;
-            $scope.ErrorAgainPassWord = true;
-            $scope.message = "Mật khẩu không trùng khớp!";
-            return hasError;
-        }
-        if (/[\W_]/.test($scope.model.AgainPassWord)) {
+        if ($scope.model.PassWord != "" && (/[\W_]/.test($scope.model.PassWord))) {
             hasError = true;
             $scope.ErrorAgainPassWord = true;
             $scope.message = "Mật khẩu không được để các ký tự đặc biệt!";
@@ -368,7 +402,21 @@ app.controller("transaction", function ($scope, $rootScope, dataservice, $locati
     $scope.modelSetup = {
         titleTable: "Transaction's records",
         titleForm: "Transaction's form",
+        titleButton: "Add",
+        insert: false,
+        delete: false,
     }
+    $scope.model = {
+        Id: 0,
+        IdService: "",
+        IdUser: "",
+        Phone: "",
+        Value: "",
+        ServicePicture: "",
+        ServiceTitle: "",
+        UserName: "",
+    };
+    $scope.listService = [];
     $scope.init = function () {
         $scope.isLoading = true;
         dataservice.getListTransaction()
@@ -381,19 +429,241 @@ app.controller("transaction", function ($scope, $rootScope, dataservice, $locati
                 }
                 $scope.isLoading = false;
             })
-            .catch(function (er) {
+            .catch(function (rs) {
                 console.log("Has error when getList!")
-                console.log(er);
+                console.log(rs);
+            });
+        dataservice.getListServiceCard()
+            .then(function (rs) {
+                if (!rs.data.hasError) {
+                    $scope.listService = rs.data.object.datas;
+                    if ($scope.listService.length > 1) {
+                        $scope.model.IdService = $scope.listService[0].id;
+                        $scope.model.ServicePicture = $scope.listService[0].picture;
+                        $scope.model.ServiceTitle = $scope.listService[0].name;
+                    };
+                } else {
+                    alert(rs.title);
+                }
+            })
+            .catch(function (rs) {
+                console.log("Has error when getList!")
+                console.log(rs);
+            });
+        dataservice.getListUser()
+            .then(function (rs) {
+                if (!rs.data.hasError) {
+                    $scope.listUser = rs.data.object.datas;
+                    if ($scope.listUser.length > 1) {
+                        $scope.model.IdUser = $scope.listUser[0].id;
+                        $scope.model.UserName = $scope.listUser[0].fullname;
+                    };
+                } else {
+                    alert(rs.title);
+                }
+                $scope.isLoading = false;
+            })
+            .catch(function (rs) {
+                console.log("Has error when getList!")
+                console.log(rs);
             });
     };
-
     $scope.init();
+    $scope.chooseService = function (id) {
+        $scope.model.IdService = id;
+        var check = $scope.listService.find(function (value) {
+            return value.id == id;
+        });
+        $scope.model.ServicePicture = check.picture;
+        $scope.model.ServiceTitle = check.name;
+    };
+    $scope.chooseUser = function (id) {
+        $scope.model.IdUser = id;
+        var check = $scope.listUser.find(function (value) {
+            return value.id == id;
+        });
+        $scope.model.UserName = check.fullname;
+    };
+    $scope.submit = function () {
+        if (!validate()) {
+            $scope.isLoading = true;
+            if ($scope.modelSetup.titleButton == "Add") {
+                $scope.model.Phone = $scope.model.Phone.substring(1);
+                dataservice.insertTransaction($scope.model)
+                    .then(function (response) {
+                        if (!response.data.hasError) {
+                            $scope.reload();
+                        } else {
+                            alert(response.data.title);
+                        }
+                        $scope.isLoading = false;
+                    })
+                    .catch(function (rs) {
+                        console.log("Has error when insertUser!")
+                        console.log(rs);
+                    });
+            } else {
+                $scope.model.Phone = $scope.model.Phone.substring(1);
+                dataservice.editTransaction($scope.model)
+                    .then(function (response) {
+                        if (!response.data.hasError) {
+                            $scope.reload();
+                        } else {
+                            alert(response.data.title);
+                        }
+                        $scope.isLoading = false;
+                    })
+                    .catch(function (rs) {
+                        console.log("Has error when insertUser!");
+                        console.log(rs);
+                    });
+            };
+        }
+    };
+    $scope.edit = function (id) {
+        $scope.insert();
+        $scope.modelSetup.titleButton = "Edit";
+        $scope.isLoading = true;
+        $scope.model.ServicePicture = "";
+        $scope.model.ServiceTitle = "";
+        $scope.model.Id = id;
+        dataservice.detailTransaction(id)
+            .then(function (response) {
+                if (!response.data.hasError) {
+                    $scope.model.IdService = response.data.object.service_id;
+                    $scope.model.ServicePicture = response.data.object.picture;
+                    $scope.model.ServiceTitle = response.data.object.name;
+                    $scope.model.IdUser = response.data.object.user_id;
+                    $scope.model.UserName = response.data.object.fullname;
+                    $scope.model.Phone = "0" + response.data.object.phone;
+                    $scope.model.Value = response.data.object.value;
+                } else {
+                    alert(response.data.title);
+                }
+                $scope.isLoading = false;
+            })
+            .catch(function (rs) {
+                console.log("Has error when detailUser!");
+                console.log(rs);
+            });
+    };
+    $scope.delete = function (id) {
+        $scope.modelSetup.delete = true;
+        $scope.layoutPopup = true;
+        $scope.model.Id = id;
+    };
+    $scope.submitDelete = function () {
+        $scope.isLoading = true;
+        dataservice.removeTransaction($scope.model.Id)
+            .then(function (response) {
+                if (!response.data.hasError) {
+                    $scope.reload();
+                }
+                $scope.isLoading = false;
+            })
+            .catch(function (rs) {
+                console.log("Has error when detailUser!");
+                console.log(rs);
+            });
+    };
+    $scope.reload = function () {
+        $scope.model.Phone = "";
+        $scope.model.Value = "";
+        if ($scope.listService.length > 1) {
+            $scope.model.IdService = $scope.listService[0].id;
+            $scope.model.ServicePicture = $scope.listService[0].picture;
+            $scope.model.ServiceTitle = $scope.listService[0].name;
+        };
+        $scope.cancle();
+        $scope.init();
+    };
+    $scope.insert = function () {
+        $scope.modelSetup.titleButton = "Add";
+        $scope.model.Phone = "";
+        $scope.model.Value = "";
+        if ($scope.listService.length > 1) {
+            $scope.model.IdService = $scope.listService[0].id;
+            $scope.model.ServicePicture = $scope.listService[0].picture;
+            $scope.model.ServiceTitle = $scope.listService[0].name;
+        };
+        $scope.modelSetup.insert = true;
+        $scope.layoutPopup = true;
+    };
+    $scope.cancle = function () {
+        $scope.modelSetup.delete = false;
+        $scope.modelSetup.insert = false;
+        $scope.layoutPopup = false;
+    };
+    $scope.changeModel = function (type) {
+        if (type == "Value" && $scope.model.Value != "") {
+            if (!/^\d+$/.test($scope.model.Value)) {
+                $scope.model.Value = $scope.model.Value.slice(0, -1);
+            }
+            $scope.ErrorAgainPassWord = false;
+        }
+        if (type == "Phone" && $scope.model.Phone != "") {
+            if (!/^\d+$/.test($scope.model.Phone)) {
+                $scope.model.Phone = $scope.model.Phone.slice(0, -1);
+            }
+            $scope.ErrorPhone = false;
+        }
+
+        if ($scope.model.Value != "" && $scope.model.Phone != "") {
+            $scope.message = "";
+        }
+
+    };
+    function validate() {
+        var hasError = false;
+        // Kiểm tra số điện thoại
+        if (!$scope.model.Phone || $scope.model.Phone == undefined) {
+            hasError = true;
+            $scope.ErrorPhone = true;
+        }
+        // Kiểm tra email
+        if (!$scope.model.Value || $scope.model.Value == undefined) {
+            hasError = true;
+            $scope.ErrorValue = true;
+        }
+        // Kiểm tra email
+        if (!$scope.model.IdService || $scope.model.IdService == undefined) {
+            hasError = true;
+        }
+        // Kiểm tra email
+        if (!$scope.model.IdUser || $scope.model.IdUser == undefined) {
+            hasError = true;
+            $scope.ErrorValue = true;
+        }
+        $scope.message = "Please enter complete information!";
+        if (hasError) {
+            return hasError;
+        } else {
+            $scope.message = "";
+        }
+        // Kiểm tra số điện thoại
+        if (!$scope.model.Phone || !/^0\d{9}$/.test($scope.model.Phone)) {
+            hasError = true;
+            $scope.ErrorPhone = true;
+            $scope.message = "Số điện thoại không hợp lệ!";
+            return hasError;
+        }
+    };
 });
 app.controller("subcription", function ($scope, $rootScope, dataservice, $location) {
     $scope.modelSetup = {
         titleTable: "Subcription's records",
         titleForm: "Subcription's form",
+        titleButton: "Add",
+        insert: false,
+        delete: false,
     }
+    $scope.model = {
+        Id: 0,
+        IdService: "",
+        ServicePicture: "",
+        ServiceTitle: "",
+        Value: "",
+    };
     $scope.init = function () {
         $scope.isLoading = true;
         dataservice.getListSubcription()
@@ -406,19 +676,179 @@ app.controller("subcription", function ($scope, $rootScope, dataservice, $locati
                 }
                 $scope.isLoading = false;
             })
-            .catch(function (er) {
+            .catch(function (rs) {
                 console.log("Has error when getList!")
-                console.log(er);
+                console.log(rs);
+            });
+        dataservice.getListServiceCard()
+            .then(function (rs) {
+                if (!rs.data.hasError) {
+                    $scope.listService = rs.data.object.datas;
+                    if ($scope.listService.length > 1) {
+                        $scope.model.IdService = $scope.listService[0].id;
+                        $scope.model.ServicePicture = $scope.listService[0].picture;
+                        $scope.model.ServiceTitle = $scope.listService[0].name;
+                    };
+                } else {
+                    alert(rs.title);
+                }
+            })
+            .catch(function (rs) {
+                console.log("Has error when getList!")
+                console.log(rs);
             });
     };
 
     $scope.init();
+
+    $scope.chooseService = function (id) {
+        $scope.model.IdService = id;
+        var check = $scope.listService.find(function (value) {
+            return value.id == id;
+        });
+        $scope.model.ServicePicture = check.picture;
+        $scope.model.ServiceTitle = check.name;
+    };
+    $scope.submit = function () {
+        if (!validate()) {
+            $scope.isLoading = true;
+            if ($scope.modelSetup.titleButton == "Add") {
+                dataservice.insertSubcription($scope.model)
+                    .then(function (response) {
+                        if (!response.data.hasError) {
+                            $scope.reload();
+                        } else {
+                            alert(response.data.title);
+                        }
+                        $scope.isLoading = false;
+                    })
+                    .catch(function (rs) {
+                        console.log("Has error when insertUser!")
+                        console.log(rs);
+                    });
+            } else {
+                dataservice.editSubcription($scope.model)
+                    .then(function (response) {
+                        if (!response.data.hasError) {
+                            $scope.reload();
+                        } else {
+                            alert(response.data.title);
+                        }
+                        $scope.isLoading = false;
+                    })
+                    .catch(function (rs) {
+                        console.log("Has error when insertUser!");
+                        console.log(rs);
+                    });
+            };
+        }
+    };
+    $scope.edit = function (id) {
+        $scope.insert();
+        $scope.modelSetup.titleButton = "Edit";
+        $scope.isLoading = true;
+        $scope.model.ServicePicture = "";
+        $scope.model.ServiceTitle = "";
+        dataservice.detailSubcription(id)
+            .then(function (response) {
+                if (!response.data.hasError) {
+                    $scope.model.IdService = response.data.object.service_id;
+                    $scope.model.Value = response.data.object.value;
+                    $scope.model.ServicePicture = response.data.object.picture;
+                    $scope.model.ServiceTitle = response.data.object.name;
+                } else {
+                    alert(response.data.title);
+                }
+                $scope.isLoading = false;
+            })
+            .catch(function (rs) {
+                console.log("Has error when detailUser!");
+                console.log(rs);
+            });
+    };
+    $scope.delete = function (id) {
+        $scope.modelSetup.delete = true;
+        $scope.layoutPopup = true;
+        $scope.model.Id = id;
+    };
+    $scope.submitDelete = function () {
+        $scope.isLoading = true;
+        dataservice.removeSubcription($scope.model.Id)
+            .then(function (response) {
+                if (!response.data.hasError) {
+                    $scope.reload();
+                }
+                $scope.isLoading = false;
+            })
+            .catch(function (rs) {
+                console.log("Has error when detailUser!");
+                console.log(rs);
+            });
+    };
+    $scope.reload = function () {
+        $scope.model = {
+            Id: 0,
+            IdService: "",
+            Value: "",
+        };
+        $scope.cancle();
+        $scope.init();
+    };
+    $scope.insert = function () {
+        $scope.model.Value = "";
+        if ($scope.listService.length > 1) {
+            $scope.model.IdService = $scope.listService[0].id;
+            $scope.model.ServicePicture = $scope.listService[0].picture;
+            $scope.model.ServiceTitle = $scope.listService[0].name;
+        };
+        $scope.modelSetup.titleButton = "Add";
+        $scope.modelSetup.insert = true;
+        $scope.layoutPopup = true;
+    };
+    $scope.cancle = function () {
+        $scope.modelSetup.delete = false;
+        $scope.modelSetup.insert = false;
+        $scope.layoutPopup = false;
+    };
+    $scope.changeModel = function (type) {
+        if (type == "Value" && $scope.model.Value != "") {
+            $scope.ErrorAgainPassWord = false;
+        }
+
+        if ($scope.model.Value != "") {
+            $scope.message = "";
+        }
+
+    };
+    function validate() {
+        var hasError = false;
+        if (!$scope.model.Value || $scope.model.Value == undefined) {
+            hasError = true;
+            $scope.ErrorValue = true;
+        }
+        if (!$scope.model.IdService || $scope.model.IdService == undefined) {
+            hasError = true;
+        }
+        $scope.message = "Please enter complete information!";
+        if (!hasError) {
+            $scope.message = "";
+        }
+        return hasError;
+    };
 });
 app.controller("serviceCard", function ($scope, $rootScope, dataservice, $location) {
     $scope.modelSetup = {
         titleTable: "ServiceCard's records",
         titleForm: "ServiceCard's form",
+        titleButton: "Add",
+        insert: false,
+        delete: false,
     }
+    $scope.model = {
+        Id: 0,
+        Name: "",
+        Picture: "",
+    };
     $scope.init = function () {
         $scope.isLoading = true;
         dataservice.getListServiceCard()
@@ -431,13 +861,138 @@ app.controller("serviceCard", function ($scope, $rootScope, dataservice, $locati
                 }
                 $scope.isLoading = false;
             })
-            .catch(function (er) {
+            .catch(function (rs) {
                 console.log("Has error when getList!")
-                console.log(er);
+                console.log(rs);
             });
     };
 
     $scope.init();
+
+    $scope.submit = function () {
+        if (!validate()) {
+            $scope.isLoading = true;
+            if ($scope.modelSetup.titleButton == "Add") {
+                dataservice.insertServiceCard($scope.model)
+                    .then(function (response) {
+                        if (!response.data.hasError) {
+                            $scope.reload();
+                        } else {
+                            alert(response.data.title);
+                        }
+                        $scope.isLoading = false;
+                    })
+                    .catch(function (rs) {
+                        console.log("Has error when insertUser!")
+                        console.log(rs);
+                    });
+            } else {
+                dataservice.editServiceCard($scope.model)
+                    .then(function (response) {
+                        if (!response.data.hasError) {
+                            $scope.reload();
+                        } else {
+                            alert(response.data.title);
+                        }
+                        $scope.isLoading = false;
+                    })
+                    .catch(function (rs) {
+                        console.log("Has error when insertUser!");
+                        console.log(rs);
+                    });
+            };
+        }
+    };
+    $scope.edit = function (id) {
+        $scope.insert();
+        $scope.modelSetup.titleButton = "Edit";
+        $scope.isLoading = true;
+        dataservice.detailServiceCard(id)
+            .then(function (response) {
+                if (!response.data.hasError) {
+                    $scope.model.Id = response.data.object.id;
+                    $scope.model.Name = response.data.object.name;
+                    $scope.model.Picture = response.data.object.picture;
+                } else {
+                    alert(response.data.title);
+                }
+                $scope.isLoading = false;
+            })
+            .catch(function (rs) {
+                console.log("Has error when detailUser!");
+                console.log(rs);
+            });
+    };
+    $scope.delete = function (id) {
+        $scope.modelSetup.delete = true;
+        $scope.layoutPopup = true;
+        $scope.model.Id = id;
+    };
+    $scope.submitDelete = function () {
+        $scope.isLoading = true;
+        dataservice.removeServiceCard($scope.model.Id)
+            .then(function (response) {
+                if (!response.data.hasError) {
+                    $scope.reload();
+                }
+                $scope.isLoading = false;
+            })
+            .catch(function (rs) {
+                console.log("Has error when detailUser!");
+                console.log(rs);
+            });
+    };
+    $scope.reload = function () {
+        $scope.model = {
+            Id: 0,
+            Name: "",
+            Picture: "",
+        };
+        $scope.cancle();
+        $scope.init();
+    };
+    $scope.insert = function () {
+        $scope.model = {
+            Id: 0,
+            Name: "",
+            Picture: "",
+        };
+        $scope.modelSetup.titleButton = "Add";
+        $scope.modelSetup.insert = true;
+        $scope.layoutPopup = true;
+    };
+    $scope.cancle = function () {
+        $scope.modelSetup.delete = false;
+        $scope.modelSetup.insert = false;
+        $scope.layoutPopup = false;
+    };
+    $scope.changeModel = function (type) {
+        if (type == "Name" && $scope.model.Name != "") {
+            $scope.ErrorName = false;
+        }
+        if (type == "Picture" && $scope.model.Picture != "") {
+            $scope.ErrorPicture = false;
+        }
+        if ($scope.model.Name != "" && $scope.model.Picture != "") {
+            $scope.message = "";
+        }
+    };
+    function validate() {
+        var hasError = false;
+        if ($scope.model.Name == "" || $scope.model.Name == undefined) {
+            hasError = true;
+            $scope.ErrorName = true;
+        }
+        if ($scope.model.Picture == "" || $scope.model.Picture == undefined) {
+            hasError = true;
+            $scope.ErrorPicture = true;
+        }
+        $scope.message = "Please enter complete information!";
+        if (!hasError) {
+            $scope.message = "";
+        };
+        return hasError;
+    };
 });
 app.controller("feedback", function ($scope, $rootScope, dataservice, $location) {
     $scope.modelSetup = {
@@ -456,9 +1011,9 @@ app.controller("feedback", function ($scope, $rootScope, dataservice, $location)
                 }
                 $scope.isLoading = false;
             })
-            .catch(function (er) {
+            .catch(function (rs) {
                 console.log("Has error when getList!")
-                console.log(er);
+                console.log(rs);
             });
     };
 

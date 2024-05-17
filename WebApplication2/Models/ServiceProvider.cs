@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace WebApplication2.Models
 {
     [Table("service_providers")]
-    public class ServiceProvider : Auditable
+    public class ServiceProviderr : Auditable
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }

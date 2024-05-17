@@ -9,37 +9,50 @@
         <div class="ad_ct_body_form">
             <div class="ad_form_content login-box" ng-show="modelSetup.insert">
                 <h1>{{modelSetup.titleForm}}</h1>
+                <div class="div_cancle" ng-click="cancle()">
+                    <i class="fas fa-times"></i>
+                </div>
                 <form>
-                    <div class="user-box" ng-class="{'lack_info': Error.UserName}">
-                        <input type="text" name="" ng-model="model.UserName" required="" ng-change="changeModel('username')">
-                        <label>Username</label>
+                    <div style=" color: white; margin-bottom: -15px; ">
+                        Service
                     </div>
-                    <div class="user-box" ng-class="{'lack_info': Error.PassWord}">
-                        <input type="{{model.showPass ? 'text' : 'password'}}" name="" ng-model="model.PassWord" required="" ng-change="changeModel('password')">
-                        <label>Password</label>
-                        <i class="fas fa-eye" ng-show="model.showPass" ng-click="model.showPass = false"></i>
-                        <i class="fas fa-eye-slash" ng-show="!model.showPass" ng-click="model.showPass = true"></i>
+                    <div class="custom-dropdown">
+                        <div class="selected-option">
+                            <div ng-show="model.ServicePicture != ''">
+                                <img style=" width: 40px; border-radius: 4px; margin-right: 5px;" src="/img/{{model.ServicePicture}}" />
+                                {{model.ServiceTitle}}
+                            </div>
+                            <i class="fas fa-caret-down"></i>
+                        </div>
+                        <div class="dropdown-list">
+                            <div ng-repeat="item in listService" class="option" ng-click="chooseService(item.id)" ng-class="{'option_selected': (item.id == model.IdService)}">
+                                <img src="/img/{{item.picture}}" />
+                                {{item.name}}
+                            </div>
+                        </div>
                     </div>
-                    <div class="user-box" ng-class="{'lack_info': Error.Phone}">
-                        <input type="text" name="" ng-model="model.Phone" required="" ng-change="changeModel('phone')">
-                        <label>Phone</label>
+                    <div class="user-box" ng-class="{'lack_info': ErrorValue}">
+                        <input type="text" name="" ng-model="model.Value" required="" ng-change="changeModel('Value')">
+                        <label>Value</label>
                     </div>
-                    <div class="user-box" ng-class="{'lack_info': Error.Email}">
-                        <input type="text" name="" ng-model="model.Email" required="" ng-change="changeModel('email')">
-                        <label>Email</label>
-                    </div>
-                    <div class="user-box" ng-class="{'lack_info': Error.FullName}">
-                        <input type="text" name="" ng-model="model.FullName" required="" ng-change="changeModel('fullname')" ng-keypress="($event.which === 13) && submit()">
-                        <label>FullName</label>
-                    </div>
-                    <div class="user-box" ng-class="{'lack_info': Error.Address}">
-                        <input type="text" name="" ng-model="model.Address" required="" ng-change="changeModel('address')">
-                        <label>Address</label>
-                    </div>
-                    <div style="color:red;height:30px">{{message}}</div>
-
-                    <button class="btn btn-success" ng-click="submit()" type="button">Insert</button>
+                    <div style="color:red;height:30px;margin: -10px 0 10px 0">{{message}}</div>
+                    <!-- ng-keypress="($event.which === 13) && submit()" -->
+                    <button class="btn btn-success" ng-click="submit()" type="button">
+                        {{modelSetup.titleButton}}
+                    </button>
                 </form>
+            </div>
+        </div>
+
+        <div class="ad_ct_body_form" ng-show="modelSetup.delete">
+            <div class="ad_form_content login-box form_access">
+                <div class="form_access_title">
+                    Are you sure you want to delete it?
+                </div>
+                <div class="form_access_group_btn">
+                    <button class="btn btn-success" ng-click="submitDelete()" type="button">Confirm</button>
+                    <button class="btn btn-danger" ng-click="cancle()" type="button">Cancel</button>
+                </div>
             </div>
         </div>
 
@@ -50,7 +63,7 @@
                     {{modelSetup.titleTable}}
                 </div>
                 <div class="group_btn_action">
-                    <button class="btn btn-success" ng-click="submit()" type="button"><i class="fas fa-plus"></i></button>
+                    <button class="btn btn-success" ng-click="insert()" type="button"><i class="fas fa-plus"></i></button>
                 </div>
             </div>
 
@@ -73,10 +86,10 @@
                             <td>{{item.value}}</td>
                             <td>{{item.purchases}}</td>
                             <td>
-                                <button class="btn btn-info" ng-click="submit()" type="button">
+                                <button class="btn btn-info" ng-click="edit(item.id)" type="button">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="btn btn-danger" ng-click="submit()" type="button">
+                                <button class="btn btn-danger" ng-click="delete(item.id)" type="button">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
