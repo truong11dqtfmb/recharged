@@ -127,7 +127,7 @@ namespace WebApplication2.Controllers
                     }
                     else
                     {
-                        u.password= RegisterController.HashPassword(sha256Hash, model.NewPassword);
+                        u.password = RegisterController.HashPassword(sha256Hash, model.NewPassword);
                         _context.Users.Update(u);
                         _context.SaveChanges();
                         rs.Title = "Change Password success!";
@@ -138,73 +138,6 @@ namespace WebApplication2.Controllers
             {
                 rs.HasError = true;
                 rs.Title = "Co loi xay ra khi EditUser!";
-            }
-
-            return Json(rs);
-        }
-        //Screen Admin/User
-        [HttpGet]
-        public IActionResult GetListUser()
-        {
-            var rs = new Result() { HasError = false, Title = "", Object = { } };
-
-            try
-            {
-                var data = (from a in _context.Users.Where(x => x.is_active == true)
-                           select new
-                           {
-                               a.ID,
-                               a.username,
-                               a.fullname,
-                               a.phone,
-                           }).ToList();
-
-
-                rs.Object = new
-                {
-                    titles = new List<string> { "ID", "User Name", "Full Name", "Phone" },
-                    datas = data
-                };
-            }
-            catch
-            {
-                rs.HasError = true;
-                rs.Title = "HasError!";
-            }
-
-            return Json(rs);
-        }
-        //Screen Admin / ListTransaction
-        [HttpGet]
-        public IActionResult GetListTransaction()
-        {
-            var rs = new Result() { HasError = false, Title = "", Object = { } };
-
-            try
-            {
-                var data = (from a in _context.Transactions.Where(x => x.is_active == true)
-                           join b in _context.Users.Where(x=>x.is_active == true) on a.user_id equals b.ID
-                           join c in _context.ServiceProviders.Where(x=>x.is_active == true) on a.service_id equals c.ID
-                           select new
-                           {
-                               a.ID,
-                               a.value,
-                               picture = c.picture,
-                               a.phone,
-                               account = b.fullname
-                           }).ToList();
-
-
-                rs.Object = new
-                {
-                    titles = new List<string> { "ID", "Value", "Phone", "Mobile", "Payment By" },
-                    datas = data
-                };
-            }
-            catch
-            {
-                rs.HasError = true;
-                rs.Title = "HasError!";
             }
 
             return Json(rs);

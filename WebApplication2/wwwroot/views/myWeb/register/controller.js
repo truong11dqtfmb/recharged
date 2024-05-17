@@ -156,7 +156,7 @@ app.controller("index", function ($scope, dataservice) {
             return hasError;
         }
         // Kiểm tra số điện thoại
-        if (!$scope.model.Phone || !/^(?!0)\d{10}$/.test($scope.model.Phone)) {
+        if (!$scope.model.Phone || !/^0\d{9}$/.test($scope.model.Phone)) {
             hasError = true;
             $scope.Error.Phone = true;
             $scope.message = "Số điện thoại không hợp lệ!";

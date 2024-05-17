@@ -214,7 +214,7 @@ html {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.3);
+    background-color: #2e2e2eac;
 }
 
 /*.layoutPopup:not(:required) {
@@ -721,8 +721,11 @@ html {
     right:0;
     cursor:pointer;
 }
-.u_content_body_submit{
-    text-align:right;
+.u_content_body{
+    margin-bottom:70px;
+}
+.u_content_body_submit {
+    text-align: right;
 }
 .u_content_body_submit > .btn{
     width: 100px;
@@ -905,4 +908,21 @@ thead > tr > th:last-child{
 }
 tr > td{
     vertical-align:middle;
+}
+.div_cancle > i {
+    font-size: 40px;
+    color:orangered;
+}
+.div_cancle {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    cursor:pointer;
+}
+.user_role::placeholder {
+    color: transparent;
+}
+
+.user_role:focus::placeholder {
+    color: #858585;
 }

@@ -10,7 +10,7 @@ namespace WebApplication2.Models
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         [StringLength(maximumLength: 255)]
-        public string description { get; set; }
+        public string? description { get; set; }
         [StringLength(maximumLength: 100)]
         public string phone { get; set; }
         public int value { get; set; }

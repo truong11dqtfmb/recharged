@@ -40,6 +40,7 @@ namespace WebApplication2.Controllers
                 {
                     phone = model.Phone+"",
                     user_id = u.ID,
+                    service_id = model.ServiceId,
                     value = model.Value,
                     create_at = DateTime.Now,
                     create_by = "Admin",
@@ -83,5 +84,6 @@ namespace WebApplication2.Controllers
         public string UserName { get; set; }
         public int Phone { get; set; }
         public int Value { get; set; }
+        public int ServiceId { get; set; }
     }
 }

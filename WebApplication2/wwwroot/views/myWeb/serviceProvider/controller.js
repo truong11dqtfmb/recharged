@@ -183,6 +183,7 @@ app.controller("buyNow", function ($scope, $rootScope, dataservice, $location) {
             UserName: $rootScope.username,
             Phone: $rootScope.phonenumber,
             Value: $rootScope.value,
+            ServiceId: $rootScope.id
         };
         dataservice.insertTransaction(data)
             .then(function (response) {

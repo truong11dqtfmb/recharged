@@ -3,11 +3,91 @@
         <div class="ad_ct_header_locate">
             Admin > {{locate}}
         </div>
-        <div class="ad_ct_header_title">
-            {{modelSetup.titleTable}}
-        </div>
     </div>
     <div class="ad_content_body">
-        List User
+
+        <div class="ad_ct_body_form">
+            <div class="ad_form_content login-box" ng-show="modelSetup.insert">
+                <h1>{{modelSetup.titleForm}}</h1>
+                <form>
+                    <div class="user-box" ng-class="{'lack_info': Error.UserName}">
+                        <input type="text" name="" ng-model="model.UserName" required="" ng-change="changeModel('username')">
+                        <label>Username</label>
+                    </div>
+                    <div class="user-box" ng-class="{'lack_info': Error.PassWord}">
+                        <input type="{{model.showPass ? 'text' : 'password'}}" name="" ng-model="model.PassWord" required="" ng-change="changeModel('password')">
+                        <label>Password</label>
+                        <i class="fas fa-eye" ng-show="model.showPass" ng-click="model.showPass = false"></i>
+                        <i class="fas fa-eye-slash" ng-show="!model.showPass" ng-click="model.showPass = true"></i>
+                    </div>
+                    <div class="user-box" ng-class="{'lack_info': Error.Phone}">
+                        <input type="text" name="" ng-model="model.Phone" required="" ng-change="changeModel('phone')">
+                        <label>Phone</label>
+                    </div>
+                    <div class="user-box" ng-class="{'lack_info': Error.Email}">
+                        <input type="text" name="" ng-model="model.Email" required="" ng-change="changeModel('email')">
+                        <label>Email</label>
+                    </div>
+                    <div class="user-box" ng-class="{'lack_info': Error.FullName}">
+                        <input type="text" name="" ng-model="model.FullName" required="" ng-change="changeModel('fullname')" ng-keypress="($event.which === 13) && submit()">
+                        <label>FullName</label>
+                    </div>
+                    <div class="user-box" ng-class="{'lack_info': Error.Address}">
+                        <input type="text" name="" ng-model="model.Address" required="" ng-change="changeModel('address')">
+                        <label>Address</label>
+                    </div>
+                    <div style="color:red;height:30px">{{message}}</div>
+
+                    <button class="btn btn-success" ng-click="submit()" type="button">Insert</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="ad_ct_body_table">
+
+            <div class="body_tb_title">
+                <div>
+                    {{modelSetup.titleTable}}
+                </div>
+                <div class="group_btn_action">
+                    <button class="btn btn-success" ng-click="submit()" type="button"><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+
+            <div class="body_tb_content">
+                <table class="table table-success table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col" ng-repeat="item in listTitle">{{item}}</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in listData">
+                            <th scope="row">{{$index + 1}}</th>
+                            <td>{{item.id}}</td>
+                            <td>
+                                <img style="width:70px;" src="/img/{{item.picture}}" />
+                            </td>
+                            <td>{{item.value}}</td>
+                            <td>{{item.purchases}}</td>
+                            <td>
+                                <button class="btn btn-info" ng-click="submit()" type="button">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger" ng-click="submit()" type="button">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
     </div>
 </div>
+<div ng-show="isLoading" class="loading">Loading&#8230;</div>
+<div ng-show="layoutPopup" class="layoutPopup"></div>

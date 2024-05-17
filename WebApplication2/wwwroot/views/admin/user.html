@@ -9,36 +9,46 @@
         <div class="ad_ct_body_form">
             <div class="ad_form_content login-box" ng-show="modelSetup.insert">
                 <h1>{{modelSetup.titleForm}}</h1>
+                <div class="div_cancle" ng-click="cancle()">
+                    <!--<i class="fas fa-times-circle"></i>-->
+                    <i class="fas fa-times"></i>
+                </div>
                 <form>
-                    <div class="user-box" ng-class="{'lack_info': Error.UserName}">
+                    <div class="user-box" ng-class="{'lack_info': ErrorUserName}">
                         <input type="text" name="" ng-model="model.UserName" required="" ng-change="changeModel('username')">
                         <label>Username</label>
                     </div>
-                    <div class="user-box" ng-class="{'lack_info': Error.PassWord}">
-                        <input type="{{model.showPass ? 'text' : 'password'}}" name="" ng-model="model.PassWord" required="" ng-change="changeModel('password')">
+                    <div class="user-box" ng-class="{'lack_info': ErrorPassWord}">
+                        <input type="{{(!model.showPass) ? 'text' : 'password'}}" name="" ng-model="model.PassWord" required="" ng-change="changeModel('password')">
                         <label>Password</label>
                         <i class="fas fa-eye" ng-show="model.showPass" ng-click="model.showPass = false"></i>
                         <i class="fas fa-eye-slash" ng-show="!model.showPass" ng-click="model.showPass = true"></i>
                     </div>
-                    <div class="user-box" ng-class="{'lack_info': Error.Phone}">
+                    <div class="user-box" ng-class="{'lack_info': ErrorPhone}">
                         <input type="text" name="" ng-model="model.Phone" required="" ng-change="changeModel('phone')">
                         <label>Phone</label>
                     </div>
-                    <div class="user-box" ng-class="{'lack_info': Error.Email}">
+                    <div class="user-box" ng-class="{'lack_info': ErrorEmail}">
                         <input type="text" name="" ng-model="model.Email" required="" ng-change="changeModel('email')">
                         <label>Email</label>
                     </div>
-                    <div class="user-box" ng-class="{'lack_info': Error.FullName}">
+                    <div class="user-box" ng-class="{'lack_info': ErrorFullName}">
                         <input type="text" name="" ng-model="model.FullName" required="" ng-change="changeModel('fullname')" ng-keypress="($event.which === 13) && submit()">
                         <label>FullName</label>
                     </div>
-                    <div class="user-box" ng-class="{'lack_info': Error.Address}">
+                    <div class="user-box" ng-class="{'lack_info': ErrorRole}">
+                        <input type="text" class="user_role" placeholder="(Admin = 0, User = 1)" name="" ng-model="model.Role" required="" ng-change="changeModel('role')" ng-keypress="($event.which === 13) && submit()">
+                        <label>Role</label>
+                    </div>
+                    <div class="user-box" ng-class="{'lack_info': ErrorAddress}">
                         <input type="text" name="" ng-model="model.Address" required="" ng-change="changeModel('address')">
                         <label>Address</label>
                     </div>
                     <div style="color:red;height:30px">{{message}}</div>
 
-                    <button class="btn btn-success" ng-click="submit()" type="button">Insert</button>
+                    <button class="btn btn-success" ng-click="submit()" type="button">
+                        {{modelSetup.titleButton}}
+                    </button>
                 </form>
             </div>
         </div>
@@ -50,7 +60,7 @@
                     {{modelSetup.titleTable}}
                 </div>
                 <div class="group_btn_action">
-                    <button class="btn btn-success" ng-click="submit()" type="button"><i class="fas fa-plus"></i></button>
+                    <button class="btn btn-success" ng-click="insert()" type="button"><i class="fas fa-plus"></i></button>
                 </div>
             </div>
 
@@ -70,17 +80,20 @@
                             <td>{{item.username}}</td>
                             <td>{{item.fullname}}</td>
                             <td>{{item.phone}}</td>
+                            <td>{{item.role}}</td>
+                            <td>{{item.amountPayment}}</td>
                             <td>
-                                <button class="btn btn-info" ng-click="submit()" type="button">
+                                <button class="btn btn-info" ng-click="edit(item.id)" type="button">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="btn btn-danger" ng-click="submit()" type="button">
+                                <button class="btn btn-danger" ng-click="delete(item.id)" type="button">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                <div ng-show="listData.length == 0" style="margin-left:20px; color:orangered">No data</div>
             </div>
 
         </div>
